@@ -28,7 +28,7 @@ EXPOSE 9546
 ENTRYPOINT ["besu"]
 
 # Default command runs Node-1; override at runtime for other nodes
-CMD ["--data-path=/besu/Node-2/data","--genesis-file=/besu/genesis.json","--rpc-http-enabled","--rpc-http-port=8546","--bootnodes=enode://b47663d5fed91287abeb711690fcc5c249aaddcf49eb71fb71e5a5b309b54a52947459beae1e368b5d4b3931eae28e686f7be9f567286fb2a544c5b5fcc9e1fb@216.24.57.4:30303","--rpc-http-api=ETH,NET,QBFT,WEB3","--host-allowlist=*","--rpc-http-cors-origins=all","--profile=ENTERPRISE","--min-gas-price=1000","--version-compatibility-protection=false","--p2p-port=30304","--metrics-enabled","--metrics-host=0.0.0.0","--metrics-port=9546"]
+CMD ["--data-path=/besu/Node-2/data","--genesis-file=/besu/genesis.json","--rpc-http-enabled","--rpc-http-port=8546","--bootnodes=enode://b47663d5fed91287abeb711690fcc5c249aaddcf49eb71fb71e5a5b309b54a52947459beae1e368b5d4b3931eae28e686f7be9f567286fb2a544c5b5fcc9e1fb@216.24.57.4:30303","--rpc-http-api=ETH,NET,QBFT,WEB3","--host-allowlist=*","--rpc-http-cors-origins=all","--profile=ENTERPRISE","--min-gas-price=1000","--version-compatibility-protection=false","--p2p-port=30304","--metrics-enabled","--metrics-host=0.0.0.0","--nat-method=AUTO","--p2p-host=216.24.57.4","--metrics-port=9546"]
 
 
 # # syntax=docker/dockerfile:1
