@@ -5,12 +5,17 @@ FROM hyperledger/besu:latest
 WORKDIR /besu
 
 # Copy the genesis file and static networking files
-COPY genesis.json        /besu/genesis.json
-COPY networkFiles        /besu/networkFiles
+# COPY genesis.json        /besu/genesis.json
+# COPY networkFiles        /besu/networkFiles
 
 # Copy pre-initialized node data directories
-COPY Node-2 /besu/Node-2
+COPY --chown=besu:besu genesis.json /besu/genesis.json
+COPY --chown=besu:besu Node-2 /besu/Node-2
+COPY --chown=besu:besu networkFiles /besu/networkFiles
 
+RUN rm -rf /besu/Node-2/data/database && \
+    mkdir -p /besu/Node-2/data && \
+    chown -R besu:besu /besu/Node-2
 
 # Expose P2P, RPC, and metrics ports for nodes 1–4
 EXPOSE 30304
