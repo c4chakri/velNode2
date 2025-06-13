@@ -1,0 +1,117 @@
+version: '3.8'
+
+services:
+  besu-node-1:
+    image: hyperledger/besu:latest
+    container_name: besu-node-1
+    restart: unless-stopped
+    volumes:
+      - ./genesis.json:/besu/genesis.json
+      - ./networkFiles:/besu/networkFiles
+      - ./Node-1/data:/besu/data
+    ports: 
+      - "8545:8545"
+      - "30303:30303"
+      - "9545:9545"
+    command: >
+      --data-path=/besu/data 
+      --genesis-file=/besu/genesis.json 
+      --rpc-http-enabled --rpc-http-api=ETH,NET,QBFT,WEB3 
+      --host-allowlist="*" --rpc-http-cors-origins="all" 
+      --profile=ENTERPRISE --min-gas-price=1000 --version-compatibility-protection=false
+      --metrics-enabled --metrics-host=0.0.0.0 --metrics-port=9545
+
+    networks:
+      qbft-net:
+        ipv4_address: 192.168.1.2
+
+  besu-node-2:
+    image: hyperledger/besu:latest
+    container_name: besu-node-2
+    restart: unless-stopped
+    volumes:
+      - ./genesis.json:/besu/genesis.json
+      - ./networkFiles:/besu/networkFiles
+      - ./Node-2/data:/besu/data
+    ports:
+      - "8546:8545"
+      - "30304:30304"
+    command: >
+      --data-path=/besu/data 
+      --genesis-file=/besu/genesis.json 
+      --bootnodes=enode://b47663d5fed91287abeb711690fcc5c249aaddcf49eb71fb71e5a5b309b54a52947459beae1e368b5d4b3931eae28e686f7be9f567286fb2a544c5b5fcc9e1fb@192.168.1.2:30303 
+      --p2p-port=30304 
+      --rpc-http-enabled --rpc-http-api=ETH,NET,QBFT,WEB3 
+      --host-allowlist="*" --rpc-http-cors-origins="all" 
+      --rpc-http-port=8546 
+      --profile=ENTERPRISE --min-gas-price=1000 --version-compatibility-protection=false
+      --metrics-enabled --metrics-host=0.0.0.0 --metrics-port=9546
+
+    depends_on: 
+      - besu-node-1
+    networks:
+      qbft-net:
+        ipv4_address: 192.168.1.3
+
+  besu-node-3:
+    image: hyperledger/besu:latest
+    container_name: besu-node-3
+    restart: unless-stopped
+    volumes:
+      - ./genesis.json:/besu/genesis.json
+      - ./networkFiles:/besu/networkFiles
+      - ./Node-3/data:/besu/data
+    ports:
+      - "8547:8545"
+      - "30305:30305"
+    command: >
+      --data-path=/besu/data 
+      --genesis-file=/besu/genesis.json 
+      --bootnodes=enode://b47663d5fed91287abeb711690fcc5c249aaddcf49eb71fb71e5a5b309b54a52947459beae1e368b5d4b3931eae28e686f7be9f567286fb2a544c5b5fcc9e1fb@192.168.1.2:30303 
+      --p2p-port=30305 
+      --rpc-http-enabled --rpc-http-api=ETH,NET,QBFT,WEB3 
+      --host-allowlist="*" --rpc-http-cors-origins="all" 
+      --rpc-http-port=8547 
+      --profile=ENTERPRISE --min-gas-price=1000 --version-compatibility-protection=false
+      --metrics-enabled --metrics-host=0.0.0.0 --metrics-port=9547
+
+    depends_on:
+      - besu-node-1
+    networks:
+      qbft-net:
+        ipv4_address: 192.168.1.4
+
+  besu-node-4:
+    image: hyperledger/besu:latest
+    container_name: besu-node-4
+    restart: unless-stopped
+    volumes:
+      - ./genesis.json:/besu/genesis.json
+      - ./networkFiles:/besu/networkFiles
+      - ./Node-4/data:/besu/data
+    ports:
+      - "8548:8545"
+      - "30306:30306"
+    command: >
+      --data-path=/besu/data 
+      --genesis-file=/besu/genesis.json 
+      --bootnodes=enode://b47663d5fed91287abeb711690fcc5c249aaddcf49eb71fb71e5a5b309b54a52947459beae1e368b5d4b3931eae28e686f7be9f567286fb2a544c5b5fcc9e1fb@192.168.1.2:30303 
+      --p2p-port=30306 
+      --rpc-http-enabled --rpc-http-api=ETH,NET,QBFT,WEB3 
+      --host-allowlist="*" --rpc-http-cors-origins="all" 
+      --rpc-http-port=8548 
+      --profile=ENTERPRISE --min-gas-price=1000 --version-compatibility-protection=false
+      --metrics-enabled --metrics-host=0.0.0.0 --metrics-port=9548
+
+    depends_on:
+      - besu-node-1
+    networks:
+      qbft-net:
+        ipv4_address: 192.168.1.5
+
+networks:
+  qbft-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.1.0/24
